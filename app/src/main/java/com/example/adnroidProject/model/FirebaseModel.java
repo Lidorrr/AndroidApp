@@ -2,7 +2,6 @@ package com.example.adnroidProject.model;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -38,17 +37,17 @@ public class FirebaseModel{
 
     }
 
-    public void getAllStudentsSince(Long since, Model.Listener<List<Student>> callback){
+    public void getAllStudentsSince(Long since, Model.Listener<List<Post>> callback){
 
-         db.collection(Student.COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+         db.collection(Post.COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
              @Override
              public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                 List<Student> list = new LinkedList<>();
+                 List<Post> list = new LinkedList<>();
                  if (task.isSuccessful()){
                      QuerySnapshot jsonsList = task.getResult();
                      int i = 0;
                      for (DocumentSnapshot json: jsonsList){
-                         Student st = Student.fromJson(json.getData());
+                         Post st = Post.fromJson(json.getData());
                          list.add(st);
                          Log.d("TAG", st.name );
                      }
@@ -56,18 +55,18 @@ public class FirebaseModel{
                  callback.onComplete(list);
              }
         });
-        db.collection(Student.COLLECTION)
-                .whereGreaterThanOrEqualTo(Student.LAST_UPDATED, new Timestamp(since,0))
+        db.collection(Post.COLLECTION)
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED, new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Student> list = new LinkedList<>();
+                List<Post> list = new LinkedList<>();
                 if (task.isSuccessful()){
                     QuerySnapshot jsonsList = task.getResult();
                     int i = 0;
                     for (DocumentSnapshot json: jsonsList){
-                        Student st = Student.fromJson(json.getData());
+                        Post st = Post.fromJson(json.getData());
                         list.add(st);
                     }
                 }
@@ -76,9 +75,9 @@ public class FirebaseModel{
         });
     }
 
-    public void addStudent(Student st, Model.Listener<Void> listener) {
+    public void addStudent(Post st, Model.Listener<Void> listener) {
 
-        db.collection(Student.COLLECTION).document(st.getId()).set(st.toJson())
+        db.collection(Post.COLLECTION).document(st.getId()).set(st.toJson())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

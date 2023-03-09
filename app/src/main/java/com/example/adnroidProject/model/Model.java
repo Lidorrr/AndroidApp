@@ -39,8 +39,8 @@ public class Model {
     final public MutableLiveData<LoadingState> EventStudentsListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
 
-    private LiveData<List<Student>> studentList;
-    public LiveData<List<Student>> getAllStudents() {
+    private LiveData<List<Post>> studentList;
+    public LiveData<List<Post>> getAllStudents() {
         if(studentList == null){
             studentList = localDb.studentDao().getAll();
             refreshAllStudents();
@@ -51,13 +51,13 @@ public class Model {
     public void refreshAllStudents(){
         EventStudentsListLoadingState.setValue(LoadingState.LOADING);
         // get local last update
-        Long localLastUpdate = Student.getLocalLastUpdate();
+        Long localLastUpdate = Post.getLocalLastUpdate();
         // get all updated recorde from firebase since local last update
         firebaseModel.getAllStudentsSince(localLastUpdate,list->{
             executor.execute(()->{
                 Log.d("TAG", " firebase return : " + list.size());
                 Long time = localLastUpdate;
-                for(Student st:list){
+                for(Post st:list){
                     // insert new records into ROOM
                     localDb.studentDao().insertAll(st);
                     if (time < st.getLastUpdated()){
@@ -70,13 +70,13 @@ public class Model {
                     e.printStackTrace();
                 }
                 // update local last update
-                Student.setLocalLastUpdate(time);
+                Post.setLocalLastUpdate(time);
                 EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
 
-    public void addStudent(Student st, Listener<Void> listener){
+    public void addStudent(Post st, Listener<Void> listener){
         firebaseModel.addStudent(st,(Void)->{
             refreshAllStudents();
             listener.onComplete(null);

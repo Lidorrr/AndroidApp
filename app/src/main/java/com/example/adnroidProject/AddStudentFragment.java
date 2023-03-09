@@ -24,8 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.adnroidProject.model.Model;
-import com.example.adnroidProject.model.Student;
-import com.example.adnroidProject.R;
+import com.example.adnroidProject.model.Post;
 import com.example.adnroidProject.databinding.FragmentAddStudentBinding;
 
 public class AddStudentFragment extends Fragment {
@@ -80,7 +79,7 @@ public class AddStudentFragment extends Fragment {
         binding.saveBtn.setOnClickListener(view1 -> {
             String name = binding.nameEt.getText().toString();
             String stId = binding.idEt.getText().toString();
-            Student st = new Student(stId,name,"",false);
+            Post st = new Post(stId,name,"",false);
 
             if (isAvatarSelected){
                 binding.avatarImg.setDrawingCacheEnabled(true);

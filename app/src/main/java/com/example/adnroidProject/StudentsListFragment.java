@@ -16,12 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.adnroidProject.R;
-import com.example.adnroidProject.StudentsListFragmentDirections;
 import com.example.adnroidProject.model.Model;
 import com.example.adnroidProject.model.Movie;
 import com.example.adnroidProject.model.MovieModel;
-import com.example.adnroidProject.model.Student;
+import com.example.adnroidProject.model.Post;
 import com.example.adnroidProject.databinding.FragmentStudentsListBinding;
 
 import java.util.List;
@@ -47,7 +45,7 @@ public class StudentsListFragment extends Fragment {
             @Override
             public void onItemClick(int pos) {
                 Log.d("TAG", "Row was clicked " + pos);
-                Student st = viewModel.getData().getValue().get(pos);
+                Post st = viewModel.getData().getValue().get(pos);
                 StudentsListFragmentDirections.ActionStudentsListFragmentToBlueFragment action = StudentsListFragmentDirections.actionStudentsListFragmentToBlueFragment(st.name);
                 Navigation.findNavController(view).navigate(action);
             }
